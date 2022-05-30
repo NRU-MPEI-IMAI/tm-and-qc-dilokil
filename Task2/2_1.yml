@@ -1,0 +1,39 @@
+input: ''
+blank: ' '
+start state: stateA
+table:
+    stateA: 
+      0: {write: a, R: stateB} 
+      b: {R: checkStates}        
+      ' ': {write: T, R: done} 
+      [1,2,a,c]: {R: notBelong} 
+
+    stateB:   
+      [0,b]: R             
+      1: {write: b, R: stateC} 
+      [2,c]: {R: notBelong}
+    stateC:
+      [1,c]: R              
+      2: {write: c, L: goToStateA}
+      [0,a,b]: {R: notBelong}
+    goToStateA:
+      [0,b,1,c]: L
+      a: {R: stateA} 
+      
+    checkStates:
+      [b,c]: R   
+      [0,1,2,a]: {R: notBelong}  
+      ' ': {write: T, L: goToStart} 
+    notBelong: 
+      [0,1,2,a,b,c]: R
+      ' ': {write: F, L: goToStart} 
+    goToStart:
+      [0,1,2,a,b,c,F,T]: L
+      ' ': {R: done}
+    done: 
+      [0,1,2,a,b,c]: {write: ' ', R}
+      
+      
+      
+      
+      

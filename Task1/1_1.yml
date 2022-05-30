@@ -1,0 +1,17 @@
+
+input: ''
+blank: ' '
+start state: start
+table:
+  start:
+    1: {R}
+    '+': {write: 1, R: goToEnd}
+    ' ': {L: done}
+  goToEnd:
+      1: {R}
+      ' ': {L: deleteLast}
+  deleteLast:
+      1: {write: ' ', L: done}
+  done:
+
+

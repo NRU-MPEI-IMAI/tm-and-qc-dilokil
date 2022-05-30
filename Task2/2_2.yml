@@ -1,0 +1,30 @@
+  input: '[()())]'
+  blank: ' '
+  start state: goToRight
+  table:
+    goToRight: 
+      ['(','{','[',a,b,c]: R
+      ')': {write: a, L: findA}
+      ']': {write: b, L: findB}
+      '}': {write: c, L: findC}
+      ' ': {write: T, L: goToStart}
+    findA:
+      [' ','[','{']: {R: notFound} 
+      [,a,b,c,']','}']: L
+      '(': {write: a, R: goToRight}
+    findB:
+      [' ','(','{']: {R: notFound} 
+      [a,b,c,')','}']: L
+      '[': {write: b, R: goToRight}
+    findC:
+      [' ','(','[']: {R: notFound} 
+      [a,b,c,')',']']: L
+      '{': {write: c, R: goToRight}
+    notFound: 
+      ['(','{','[',a,b,c,']','}',')']: R
+      ' ': {write: F, L: goToStart} 
+    goToStart:
+      ['(','{','[',a,b,c,']','}',')']: L
+      ' ': {R: done}
+    done: 
+      ['(','{','[',a,b,c,']','}',')']: {write: ' ', R}

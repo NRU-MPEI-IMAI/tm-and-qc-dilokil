@@ -1,0 +1,46 @@
+  input: '1101 1 00 101'
+  blank: ' '
+  start state: start
+  table:
+    start:
+      [1,0]: R
+      ' ': {write: '_', R: checkEl}
+    
+    checkEl:
+      ' ': {L: delSpace}
+      [0,1]: {R: start}
+      
+    delSpace:
+     '_': {write: ' ', L: goToFirst}
+     
+    goToFirst:
+      [1,0,'_']: L
+      ' ': {R: word}
+
+    word: 
+      [a,b,'_',' ']: R
+      0: {write: a, R: goToNextWord}
+      1: {write: b, R: goToNextWord}
+      
+    goToNextWord:
+      [0,1]: R
+      '_': {R: word}
+      ' ': {L: checkLetter}
+    
+    back:
+      [0,1,a,b,'_']: L
+      '_': {L: checkLetter}
+      ' ': {R: word}
+
+    checkLetter:
+      a: {write: 0, L: setIndex}
+      b: {write: 1, L: setIndex}
+      [0,1]: {L: back}
+
+    
+    setIndex:
+      a: {write: 0, L}
+      b: {write: 1, L}
+      ['_',' ']: {R: done}
+    
+    done:

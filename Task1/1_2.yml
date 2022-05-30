@@ -1,0 +1,36 @@
+  input: '11*11'
+  blank: ' '
+  start state: firstNum
+  table:
+    firstNum:              
+      '1': {write: ' ', R: goToSecond}  
+      '*': {L: goToStart}             
+    goToSecond:               
+      '1': R
+      '*': {R: secondNum}  
+    goToNextFirst:              
+      ' ': {write: '1', R: firstNum}
+      ['1','*']: L
+    goToStart:   
+      '1': L
+      ' ': {R: deleteAll}
+    deleteAll:
+      ['1','*']: {write: ' ', R}
+      ' ': {R: done}
+    done:
+
+    secondNum:
+      ' ': {L: goToNextFirst}
+      '1': {write: ' ', R: goToResult}
+    goToResult:
+      ' ': {R: add}
+      '1': R
+    add:
+      ' ': {write: '1', L: goBackToSecond}
+      '1': R
+    goBackToSecond:
+      ' ': {L: goToNextSecond}
+      '1': L
+    goToNextSecond:
+      ' ': {write: '1', R: secondNum}
+      '1': L
